@@ -1,0 +1,8 @@
+flask
+flask-mysqldb
+flask-jwt-extended
+mysql-connector-python
+bcrypt
+dotenv
+pandas
+matplotlib

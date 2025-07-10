@@ -1,0 +1,52 @@
+# Python virtual environment
+venv/
+# Python environment files
+.env
+# Python bytecode cache
+__pycache__/
+*.py[cod]
+
+# Also useful to ignore:
+*.pyo
+*.pyd
+
+# Compiled output
+websites/dist
+websites/tmp
+websites/out-tsc
+websites/bazel-out
+
+# Node
+websites/node_modules
+websites/npm-debug.log
+websites/yarn-error.log
+
+# IDEs and editors
+websites/.idea/
+websites/.project
+websites/.classpath
+websites/.c9/
+websites/*.launch
+websites/.settings/
+websites/*.sublime-workspace
+
+# Visual Studio Code
+websites/.vscode/*
+websites/!.vscode/settings.json
+websites/!.vscode/tasks.json
+websites/!.vscode/launch.json
+websites/!.vscode/extensions.json
+websites/.history/*
+
+# Miscellaneous
+websites/.angular/cache
+websites/.sass-cache/
+websites/connect.lock
+websites/coverage
+websites/libpeerconnection.log
+websites/testem.log
+websites/typings
+
+# System files
+websites/.DS_Store
+websites/Thumbs.db
