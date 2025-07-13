@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 import bcrypt
 from db_manager import DBManager
 from auth import create_auth_blueprint
@@ -10,6 +11,9 @@ import os
 load_dotenv()  # Load variables from .env
 
 app = Flask(__name__)
+
+# Autoriser CORS sur toute l'application
+CORS(app, origins="*")  # remplacer * par l'addresse du site web quand en production
 
 # MySQL configurations from environment variables
 app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')

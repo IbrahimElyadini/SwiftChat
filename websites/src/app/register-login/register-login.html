@@ -1,0 +1,61 @@
+<div class="center-wrapper">
+  <div class="container">
+    @if(mode === 'register') {
+      <h1>Register</h1>
+    }@else {
+      <h1>Login</h1>
+    }
+    <form #f="ngForm" (ngSubmit)="mode === 'register' ? register() : login()">
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          class="form-control"
+          placeholder="Enter your username"
+          [(ngModel)]="username"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="form-control"
+          placeholder="Enter your password"
+          [(ngModel)]="password"
+        />
+      </div>
+
+      <!-- Email field only in Register mode -->
+      <div *ngIf="mode === 'register'" class="form-group">
+        <label for="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="form-control"
+          placeholder="Enter your email"
+          [(ngModel)]="email"
+        />
+      </div>
+
+      <div class="btn-group">
+        <button type="submit" class="btn btn-primary">
+          {{ mode === 'register' ? 'Register' : 'Login' }}
+        </button>
+
+        <button type="button" class="btn btn-secondary" (click)="toggleMode()">
+          Switch to {{ mode === 'register' ? 'Login' : 'Register' }}
+        </button>
+      </div>
+    </form>
+    <!-- Display error -->
+    <div *ngIf="errorMessage" class="error-box">
+      {{ errorMessage }}
+    </div>
+  </div>
+</div>
