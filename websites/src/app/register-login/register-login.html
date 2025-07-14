@@ -5,7 +5,8 @@
     }@else {
       <h1>Login</h1>
     }
-    <form #f="ngForm" (ngSubmit)="mode === 'register' ? register() : login()">
+
+    <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
       <div class="form-group">
         <label for="username">Username:</label>
         <input
@@ -15,6 +16,9 @@
           class="form-control"
           placeholder="Enter your username"
           [(ngModel)]="username"
+          required
+          minlength="5"
+          #usernameRef="ngModel"
         />
       </div>
 
@@ -27,6 +31,9 @@
           class="form-control"
           placeholder="Enter your password"
           [(ngModel)]="password"
+          required
+          minlength="5"
+          #passwordRef="ngModel"
         />
       </div>
 
@@ -40,11 +47,16 @@
           class="form-control"
           placeholder="Enter your email"
           [(ngModel)]="email"
+          required
+          email
+          #emailRef="ngModel"
         />
       </div>
 
       <div class="btn-group">
-        <button type="submit" class="btn btn-primary">
+        <button
+          type="submit"
+          class="btn btn-primary"        >
           {{ mode === 'register' ? 'Register' : 'Login' }}
         </button>
 
@@ -53,6 +65,7 @@
         </button>
       </div>
     </form>
+
     <!-- Display error -->
     <div *ngIf="errorMessage" class="error-box">
       {{ errorMessage }}

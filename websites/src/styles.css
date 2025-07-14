@@ -1,4 +1,202 @@
-/* You can add global styles to this file, and also import other style files */
+/* === THEME VARIABLES === */
+:root {
+  /* Light Mode Colors */
+  --color-bg-light: #f2f3f5;
+  --color-text-light: #060607;
+  --color-container-bg: #ffffff;
+  --color-container-border: #d1d1d1;
+  --color-input-border: #c7c7c7;
+  --color-input-bg: #ffffff;
+  --color-input-text: #2e3338;
+  --color-primary: #5865f2;
+  --color-primary-hover: #4752c4;
+  --color-secondary: #99aab5;
+  --color-secondary-hover: #7f8c99;
+  --color-error-bg: #fa7070;
+  --color-error-border: #f38181;
+  --color-error-text: #4e1f1f;
+  --color-link: #00a8fc;
+
+  /* Dark Mode Colors */
+  --color-bg-dark: #2b2d31;
+  --color-text-dark: #f2f3f5;
+  --color-container-bg-dark: #1e1f22;
+  --color-container-border-dark: #4e5058;
+  --color-input-bg-dark: #303338;
+  --color-input-border-dark: #55575c;
+  --color-primary-dark: #5865f2;
+  --color-primary-hover-dark: #4752c4;
+  --color-secondary-dark: #72767d;
+  --color-secondary-hover-dark: #5a5d65;
+  --color-error-bg-dark: #a54242;
+  --color-error-border-dark: #c15c5c;
+  --color-error-text-dark: #ffffff;
+
+  /* Header */
+  --header-bg-light: #ffffff;
+  --header-border-light: #d1d1d1;
+  --header-text-light: #060607;
+
+  --header-bg-dark: #1e1f22;
+  --header-border-dark: #4e5058;
+  --header-text-dark: #f2f3f5;
+
+  --button-hover-bg: rgba(255, 255, 255, 0.1);
+}
+
+/* === GLOBAL BASE === */
+html, body {
+  overflow: hidden;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
-    background-color: hsla(263, 52%, 35%, 0.548);
+  background-color: var(--color-bg-light);
+  color: var(--color-text-light);
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* === CONTAINER === */
+.container {
+  background-color: var(--color-container-bg);
+  border: 1px solid var(--color-container-border);
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  width: 320px;
+}
+
+/* === TEXT STYLES === */
+h1 {
+  text-align: center;
+  color: var(--color-text-light);
+  margin-bottom: 1.5rem;
+  font-family: "Segoe UI", sans-serif;
+  font-weight: 600;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--color-text-light);
+  font-weight: 500;
+}
+
+/* === FORM === */
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+input.form-control {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid var(--color-input-border);
+  border-radius: 5px;
+  background-color: var(--color-input-bg);
+  color: var(--color-input-text);
+  box-sizing: border-box;
+}
+
+/* === BUTTONS === */
+.btn-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.btn {
+  flex: 1;
+  padding: 0.7rem;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-secondary-hover);
+}
+
+/* === ERROR BOX === */
+.error-box {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background-color: var(--color-error-bg);
+  border: 1px solid var(--color-error-border);
+  color: var(--color-error-text);
+  border-radius: 5px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* === LINKS === */
+a {
+  color: var(--color-link);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* === DARK MODE === */
+body.dark-mode {
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-dark);
+}
+
+body.dark-mode .container {
+  background-color: var(--color-container-bg-dark);
+  border-color: var(--color-container-border-dark);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode h1,
+body.dark-mode label {
+  color: var(--color-text-dark);
+}
+
+body.dark-mode input.form-control {
+  background-color: var(--color-input-bg-dark);
+  color: var(--color-text-dark);
+  border-color: var(--color-input-border-dark);
+}
+
+body.dark-mode .btn-primary {
+  background-color: var(--color-primary-dark);
+}
+
+body.dark-mode .btn-primary:hover {
+  background-color: var(--color-primary-hover-dark);
+}
+
+body.dark-mode .btn-secondary {
+  background-color: var(--color-secondary-dark);
+}
+
+body.dark-mode .btn-secondary:hover {
+  background-color: var(--color-secondary-hover-dark);
+}
+
+body.dark-mode .error-box {
+  background-color: var(--color-error-bg-dark);
+  border-color: var(--color-error-border-dark);
+  color: var(--color-error-text-dark);
 }

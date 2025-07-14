@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm  } from '@angular/forms';
 import { Api } from '../api';
 import { UserInfo } from '../user-info';
 import { CommonModule } from '@angular/common';
@@ -9,14 +9,15 @@ import { UserCredential } from '../user-credential';
   selector: 'app-register-login',
   imports: [FormsModule, CommonModule],
   templateUrl: './register-login.html',
-  styleUrls: ['./register-login.css'] 
+  styleUrls: ['./register-login.css']
 })
 export class RegisterLogin {
   username: string = '';
   password: string = '';
   email: string = '';
   errorMessage: string = '';
-  mode: 'register' | 'login' = 'register';  
+  mode: 'register' | 'login' = 'register';
+  timeout: number = 2200; // Timeout for form reset
 
   constructor(private api: Api) {}
 
@@ -25,9 +26,30 @@ export class RegisterLogin {
     this.mode = this.mode === 'register' ? 'login' : 'register';
   }
 
-  login() {
+  onSubmit(form: NgForm) {
+    if (form.invalid) {
+      this.errorMessage = 'Please fill in all required fields correctly.';
+      console.error('Form is invalid:', this.errorMessage);
+      return;
+    }
+
     this.errorMessage = '';
 
+    if (this.mode === 'register') {
+      this.register();
+    } else {
+      this.login();
+    }
+    setTimeout(() => {
+      form.resetForm();
+      this.username = '';
+      this.password = '';
+      this.email = '';  
+    }, this.timeout);
+
+  }
+
+  login() {
     const credentials: UserCredential = {
       username: this.username,
       password: this.password
@@ -56,9 +78,7 @@ export class RegisterLogin {
   }
 
   register() {
-    this.errorMessage = '';
-
-    const user : UserInfo = {
+    const user: UserInfo = {
       username: this.username,
       password: this.password,
       email: this.email
@@ -74,14 +94,14 @@ export class RegisterLogin {
       error: (error) => {
         if (error.status === 400) {
           this.errorMessage = 'Bad request: ' + error.error.message;
-        } else if( error.status === 409) {
+        } else if (error.status === 409) {
           this.errorMessage = 'User already exists';
         } else if (error.status === 500) {
           this.errorMessage = 'Server error';
         } else {
           this.errorMessage = 'Unexpected error occurred';
         }
-        console.log("setting error:", this.errorMessage)
+        console.log("setting error:", this.errorMessage);
       }
     });
   }
