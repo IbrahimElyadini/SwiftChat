@@ -1,5 +1,5 @@
 <header [class.app-header]="true" [class.dark-header]="darkMode" [class.light-header]="!darkMode">
-  <div class="app-title">SwiftChat <img src="/spark-icon.svg" alt="lightning" class="lightning-icon" /></div>
+  <div class="app-title" (click)="gotoHome()">SwiftChat <img src="/spark-icon.svg" alt="lightning" class="lightning-icon" /></div>
   
   <div class="header-actions">
     <button class="mode-toggle" (click)="toggleDarkMode()">

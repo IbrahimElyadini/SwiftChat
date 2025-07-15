@@ -1,0 +1,99 @@
+<div class="center-wrapper">
+  <div class="container profile-container">
+    <h1>User Profile</h1>
+
+    <div *ngIf="errorMessage" class="error-box">
+      {{ errorMessage }}
+    </div>
+
+    <form (ngSubmit)="updateProfile()" #profileForm="ngForm" class="profile-form">
+
+      <!-- Username (read-only) -->
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input id="username" type="text" [(ngModel)]="profile.username" name="username" disabled />
+      </div>
+
+      <!-- Email (read-only) -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" [(ngModel)]="profile.email" name="email" disabled />
+      </div>
+
+      <!-- Bio: show text normally, switch to textarea on hover -->
+      <div
+        class="form-group bio-group"
+        (mouseenter)="bioEditing = true"
+        (mouseleave)="bioEditing = false"
+      >
+        <label for="bio">Bio</label>
+
+        <div *ngIf="!bioEditing" class="bio-text" tabindex="0" aria-label="User bio">
+          {{ profile.bio || 'No bio provided.' }}
+        </div>
+
+        <textarea
+          *ngIf="bioEditing"
+          id="bio"
+          [(ngModel)]="profile.bio"
+          name="bio"
+          rows="3"
+          placeholder="Write something about yourself..."
+          required
+          autofocus
+          maxlength="25"
+          class="bio-textarea"
+        ></textarea>
+      </div>
+
+      <!-- Avatar with preview and Change Avatar button -->
+      <div class="form-group avatar-group">
+        <label for="avatar">Avatar</label>
+        <img
+          [src]="'/avatar' + profile.avatar + '.png'"
+          alt="Current Avatar"
+          width="40"
+          height="40"
+        />
+        <button type="button" (click)="openAvatarPopup()" class="btn btn-link">
+          Change Avatar
+        </button>
+      </div>
+
+      <!-- ID (read-only) -->
+      <div class="form-group">
+        <label for="id">User ID</label>
+        <input id="id" type="number" [(ngModel)]="profile.id" name="id" disabled />
+      </div>
+
+      <!-- Buttons -->
+      <div class="btn-group">
+        <button class="btn btn-primary" type="submit">
+          Update
+        </button>
+        <button class="btn btn-secondary" type="button" (click)="deleteProfile()">
+          Delete
+        </button>
+      </div>
+    </form>
+
+    <!-- Avatar selection popup modal -->
+    <div class="modal-backdrop" *ngIf="avatarPopupOpen" (click)="closeAvatarPopup()"></div>
+    <div class="avatar-popup" *ngIf="avatarPopupOpen" role="dialog" aria-modal="true" aria-labelledby="avatarPopupTitle">
+      <h2 id="avatarPopupTitle">Select Your Avatar</h2>
+      <div class="avatar-list">
+        <button
+          *ngFor="let av of availableAvatars"
+          (click)="selectAvatar(av)"
+          [class.selected]="profile.avatar === av"
+          class="avatar-item"
+          [attr.aria-pressed]="profile.avatar === av"
+          type="button"
+        >
+          <img [src]="'/avatar' + av + '.png'" alt="Avatar {{ av }}" width="40" height="40" />
+        </button>
+      </div>
+      <button class="btn btn-secondary close-btn" (click)="closeAvatarPopup()">Close</button>
+    </div>
+  </div>
+</div>

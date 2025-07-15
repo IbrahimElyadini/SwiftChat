@@ -19,7 +19,18 @@ def create_auth_blueprint(db):
 
         hashed_pw = bcrypt.hashpw(password, bcrypt.gensalt())
         db.add_user(username, email, hashed_pw)
-        return jsonify({"message": "User registered successfully"}), 201
+
+        # recuperation de l'ID de l'utilisateur nouvellement créé
+        user = db.get_user_by_username(username)
+        if not user:
+            return jsonify({"error": "User registration failed"}), 500
+
+        return jsonify({
+            "message": "User registered successfully",
+            "user_id": user[0],
+            "username": user[1],
+            "email": user[2]
+        }), 201
 
     @auth_bp.route('/login', methods=['POST'])
     def login():

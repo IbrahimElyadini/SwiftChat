@@ -4,6 +4,7 @@ import { Api } from '../api';
 import { UserInfo } from '../user-info';
 import { CommonModule } from '@angular/common';
 import { UserCredential } from '../user-credential';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-login',
@@ -19,7 +20,7 @@ export class RegisterLogin {
   mode: 'register' | 'login' = 'register';
   timeout: number = 2200; // Timeout for form reset
 
-  constructor(private api: Api) {}
+  constructor(private api: Api, private router: Router) {}
 
   toggleMode() {
     this.errorMessage = '';
@@ -57,10 +58,15 @@ export class RegisterLogin {
 
     this.api.login(credentials).subscribe({
       next: (response) => {
-        console.log('User logged in successfully:', response);
         sessionStorage.setItem('username', credentials.username);
         sessionStorage.setItem('password', credentials.password);
         sessionStorage.setItem('loggedIn', 'true');
+        sessionStorage.setItem('userId', response.user_id.toString());
+        console.log('User logged in successfully:', response);
+
+        setTimeout(() => {
+          this.router.navigate(['/']);
+        }, this.timeout);
       },
       error: (error) => {
         if (error.status === 401) {
@@ -89,7 +95,12 @@ export class RegisterLogin {
         sessionStorage.setItem('username', user.username);
         sessionStorage.setItem('password', user.password);
         sessionStorage.setItem('loggedIn', 'true');
-        console.log(response.message);
+        sessionStorage.setItem('userId', response.user_id.toString());
+        console.log("User registered successfully: ", response);
+
+        setTimeout(() => {
+          this.router.navigate(['/']);
+        }, this.timeout);
       },
       error: (error) => {
         if (error.status === 400) {

@@ -85,49 +85,111 @@ label {
   font-weight: 500;
 }
 
-/* === FORM === */
+/* === FORM GROUPS AND INPUTS === */
 .form-group {
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
 }
 
-input.form-control {
+label {
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  color: var(--color-text-light);
+}
+
+body.dark-mode label {
+  color: var(--color-text-dark);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+textarea {
   width: 100%;
-  padding: 0.6rem;
-  border: 1px solid var(--color-input-border);
-  border-radius: 5px;
+  padding: 0.6rem 0.75rem;
+  border: 1.5px solid var(--color-input-border);
+  border-radius: 6px;
   background-color: var(--color-input-bg);
   color: var(--color-input-text);
+  font-size: 1rem;
+  font-family: inherit;
   box-sizing: border-box;
+  transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode input[type="text"],
+body.dark-mode input[type="email"],
+body.dark-mode input[type="number"],
+body.dark-mode textarea {
+  background-color: var(--color-input-bg-dark);
+  border-color: var(--color-input-border-dark);
+  color: var(--color-text-dark);
+}
+
+/* Disabled inputs - slightly grayed out but visible */
+input:disabled {
+  background-color: var(--color-input-bg);
+  color: var(--color-input-text);
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+body.dark-mode input:disabled {
+  background-color: var(--color-input-bg-dark);
+  color: var(--color-text-dark);
+  opacity: 0.7;
+}
+
+/* Focus styles */
+input:focus,
+textarea:focus {
+  border-color: var(--color-primary);
+  outline: none;
+  box-shadow: 0 0 5px var(--color-primary);
+}
+
+body.dark-mode input:focus,
+body.dark-mode textarea:focus {
+  border-color: var(--color-primary-dark);
+  box-shadow: 0 0 5px var(--color-primary-dark);
 }
 
 /* === BUTTONS === */
 .btn-group {
   display: flex;
-  gap: 10px;
-  margin-top: 1rem;
+  gap: 1rem;
+  margin-top: 2rem;
 }
 
 .btn {
   flex: 1;
-  padding: 0.7rem;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  padding: 0.75rem;
+  font-weight: 600;
   font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
   transition: background-color 0.3s ease;
+  border: none;
 }
 
 .btn-primary {
   background-color: var(--color-primary);
+  color: white;
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
   background-color: var(--color-primary-hover);
+}
+
+.btn-primary:disabled {
+  background-color: #a3a7f3;
+  cursor: not-allowed;
 }
 
 .btn-secondary {
   background-color: var(--color-secondary);
+  color: white;
 }
 
 .btn-secondary:hover {
@@ -136,14 +198,16 @@ input.form-control {
 
 /* === ERROR BOX === */
 .error-box {
-  margin-top: 1rem;
-  padding: 0.75rem;
+  margin-top: 1.5rem;
+  padding: 1rem;
   background-color: var(--color-error-bg);
   border: 1px solid var(--color-error-border);
   color: var(--color-error-text);
-  border-radius: 5px;
-  font-weight: 600;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 1rem;
   text-align: center;
+  box-shadow: 0 0 10px var(--color-error-bg);
 }
 
 /* === LINKS === */

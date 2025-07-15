@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@600&display=swap');
+
 .center-wrapper {
   height: 100vh;
   display: flex;
@@ -42,8 +43,26 @@ input.form-control {
   border-radius: 5px;
   box-sizing: border-box;
   font-family: 'Open Sans', sans-serif;
+  font-size: 1rem;
+  background-color: #fff;
+  color: #222;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+input.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+  outline: none;
+}
+
+/* Prevent autofill styling issues */
+input:-webkit-autofill {
+  background-color: #fff !important;
+  transition: background-color 5000s ease-in-out 0s;
+  color: #222 !important;
+}
+
+/* === BUTTONS === */
 .btn-group {
   display: flex;
   gap: 10px;
@@ -79,6 +98,7 @@ input.form-control {
   background-color: #5a6268;
 }
 
+/* === ERROR BOX === */
 .error-box {
   margin-top: 1rem;
   padding: 0.75rem;

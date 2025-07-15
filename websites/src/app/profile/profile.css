@@ -1,0 +1,199 @@
+
+/* === PROFILE CONTAINER === */
+.profile-container {
+  width: 400px;
+  max-width: 600px;
+  margin: 3rem auto;
+  padding: 2rem 3rem;
+  box-sizing: border-box;
+  background-color: var(--color-container-bg);
+  border: 1px solid var(--color-container-border);
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  transition: background-color 0.3s, border-color 0.3s;
+  /* Optionnel : limite la hauteur max pour éviter trop grand */
+  max-height: 84vh;
+  overflow-y: auto;
+
+}
+
+body.dark-mode .profile-container {
+  background-color: var(--color-container-bg-dark);
+  border-color: var(--color-container-border-dark);
+}
+
+/* === AVATAR GROUP === */
+.avatar-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar-display {
+  font-weight: 700;
+  color: var(--color-text-light);
+  min-width: 50px;
+}
+
+body.dark-mode .avatar-display {
+  color: var(--color-text-dark);
+}
+
+.avatar-group button.btn-link {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  color: var(--color-primary);
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.avatar-group button.btn-link:hover {
+  color: var(--color-primary-hover);
+}
+
+/* === BIO TEXT === */
+.bio-text {
+  resize: none;
+  width: 100%;
+  min-height: 60px;
+  max-height: 80px;
+  padding: 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background-color: var(--color-input-bg);
+  color: var(--color-input-text);
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 0.95rem;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  cursor: pointer;
+}
+
+.bio-group:hover .bio-text {
+  border: 1px solid var(--color-input-border);
+  background-color: #f9f9f9;
+}
+
+body.dark-mode .bio-text {
+  background-color: var(--color-input-bg-dark);
+  color: var(--color-text-dark);
+}
+
+body.dark-mode .bio-group:hover .bio-text {
+  border-color: var(--color-input-border-dark);
+  background-color: #3a3b3f;
+}
+
+/* === AVATAR POPUP === */
+.avatar-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  padding: 20px;
+  z-index: 1001;
+  width: 300px;
+}
+
+body.dark-mode .avatar-popup {
+  background: var(--color-container-bg-dark);
+  color: var(--color-text-dark);
+  box-shadow: 0 4px 12px rgba(255,255,255,0.15);
+}
+
+.modal-backdrop {
+  position: fixed;
+  top:0; left:0; right:0; bottom:0;
+  background: rgba(0,0,0,0.4);
+  z-index: 1000;
+}
+
+.avatar-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.avatar-item {
+  flex: 1 1 30%;
+  padding: 10px;
+  background: #eee;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  text-align: center;
+  font-weight: 600;
+  user-select: none;
+}
+
+body.dark-mode .avatar-item {
+  background: var(--color-input-bg-dark);
+  color: var(--color-text-dark);
+}
+
+.avatar-item.selected {
+  border-color: var(--color-primary);
+  background-color: #d0e7ff;
+}
+
+body.dark-mode .avatar-item.selected {
+  background-color: #4752c4;
+  color: white;
+}
+
+.avatar-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar-item.selected .avatar-img {
+  border: 2px solid var(--color-primary);
+}
+
+.close-btn {
+  margin-top: 10px;
+  width: 100%;
+}
+
+
+.bio-textarea {
+  resize: none;
+  width: 100%;
+  min-height: 60px;
+  max-height: 80px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  border: 1px solid var(--color-input-border);
+  border-radius: 5px;
+  padding: 0.5rem;
+  background-color: var(--color-input-bg);
+  color: var(--color-input-text);
+  box-sizing: border-box;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 480px) {
+  .profile-container {
+    width: 90%;
+    padding: 1.5rem;
+  }
+
+  .btn-group {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
