@@ -1,0 +1,103 @@
+.home-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 3rem 1rem;
+  background-color: var(--color-bg-light);
+  color: var(--color-text-light);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-mode .home-wrapper {
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-dark);
+}
+
+.home-card {
+  background-color: var(--color-container-bg);
+  border: 1px solid var(--color-container-border);
+  padding: 2.5rem;
+  border-radius: 12px;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+  color: var(--color-text-light);
+}
+
+body.dark-mode .home-card {
+  background-color: var(--color-container-bg-dark);
+  border-color: var(--color-container-border-dark);
+  box-shadow: 0 5px 20px rgba(255, 255, 255, 0.15);
+  color: var(--color-text-dark);
+}
+
+.home-card h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--color-primary);
+}
+
+.home-card p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  color: inherit;
+}
+
+.btn-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn {
+  flex: 1;
+  padding: 0.75rem;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  font-family: 'Open Sans', sans-serif;
+  color: white;
+  user-select: none;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+}
+
+body.dark-mode .btn-primary {
+  background-color: var(--color-primary-dark);
+}
+
+body.dark-mode .btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-hover-dark);
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-secondary-hover);
+}
+
+body.dark-mode .btn-secondary {
+  background-color: var(--color-secondary-dark);
+}
+
+body.dark-mode .btn-secondary:hover {
+  background-color: var(--color-secondary-hover-dark);
+}
+
+

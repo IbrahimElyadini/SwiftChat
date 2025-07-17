@@ -20,6 +20,9 @@ export class Header implements OnInit {
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.isLoggedIn = sessionStorage.getItem('loggedIn') === 'true';
+      const storedMode = localStorage.getItem('darkMode');
+      this.darkMode = (storedMode === 'true');
+      document.body.classList.toggle('dark-mode', this.darkMode);
 
       // Simulate mouse events to trigger any hover effects which help with UI updates
       setTimeout(() => {
@@ -38,6 +41,7 @@ export class Header implements OnInit {
     this.darkMode = !this.darkMode;
     if (isPlatformBrowser(this.platformId)) {
       document.body.classList.toggle('dark-mode', this.darkMode);
+      localStorage.setItem('darkMode', String(this.darkMode));
     }
   }
 

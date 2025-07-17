@@ -65,5 +65,41 @@ def create_services_blueprint(db):
         messages = db.get_messages(conversation_id)
         msgs = [{"sender_id": m[0], "message": m[1], "sent_at": str(m[2])} for m in messages]
         return jsonify(msgs)
+    
+    @services_bp.route('/conversations/<int:user_id>', methods=['GET'])
+    def get_user_conversations(user_id):
+        user = db.get_user_by_id(user_id)
+        if not user:
+            return jsonify({"error": "User not found"}), 404
+
+        conversations = db.get_conversations_for_user(user_id)
+        result = [
+            {
+                "conversation_id": c[0],
+                "name": c[1],
+                "created_at": str(c[2])
+            }
+            for c in conversations
+        ]
+
+        return jsonify(result), 200
+    
+    @services_bp.route('/conversations/<int:conversation_id>/messages', methods=['GET'])
+    def get_conversation_messages(conversation_id):
+        if not db.conversation_id_exists(conversation_id):
+            return jsonify({"error": "Conversation not found"}), 404
+
+        messages = db.get_messages(conversation_id)
+        result = [
+            {
+                "sender_id": m[0],
+                "message": m[1],
+                "sent_at": str(m[2])
+            }
+            for m in messages
+        ]
+        return jsonify(result), 200
+
+ 
 
     return services_bp

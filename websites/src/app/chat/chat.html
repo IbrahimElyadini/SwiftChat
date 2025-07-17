@@ -1,1 +1,76 @@
-<p>chat works!</p>
+<div class="chat-container">
+  <!-- Conversations list -->
+  <div class="chat-sidebar-left">
+    <h3>Conversations</h3>
+    <ul>
+      <li *ngFor="let convo of conversations" (click)="selectConversation(convo)">
+        <img
+          class="avatar-small"
+          [src]="'/avatar' + 0 + '.png'"
+          alt="Avatar"
+          width="30"
+          height="30"
+        />
+        {{ convo.title }}
+      </li>
+    </ul>
+  </div>
+
+  <!-- Current conversation or empty message -->
+ <div class="chat-main">
+  <ng-container *ngIf="selectedConversation; else emptyState">
+    <h3>{{ selectedConversation.title }}</h3>
+
+    <div class="messages">
+      <div *ngFor="let message of selectedMessages">
+        <strong>{{ message.sender_id === currentUserId ? 'You' : 'User ' + message.sender_id }}:</strong>
+        {{ message.message }}
+      </div>
+    </div>
+
+    <!-- Message input bar -->
+    <div class="message-input">
+      <input
+        type="text"
+        [(ngModel)]="newMessageText"
+        placeholder="Type your message..."
+        (keydown.enter)="sendMessage()"
+      />
+      <button (click)="sendMessage()">Send</button>
+    </div>
+  </ng-container>
+
+  <ng-template #emptyState>
+    <p class="empty-message">Start a conversation</p>
+  </ng-template>
+</div>
+
+  <!-- User list -->
+  <div class="chat-sidebar-right">
+    <h3>Users</h3>
+    <ul>
+      <li *ngFor="let user of users" (click)="startConversation(user)">
+        <img
+          class="avatar-small"
+          [src]="'/avatar' + user.avatar + '.png'"
+          alt="Avatar"
+          width="30"
+          height="30"
+        />
+        <div class="user-info">
+          <div class="username">{{ user.username }}</div>
+          <div class="bio">{{ user.bio }}</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- Simple popup -->
+<div *ngIf="showPopup" class="popup">
+  <div class="popup-content">
+    <p>Start a conversation with {{ popupUser?.username }}?</p>
+    <button (click)="confirmStart()">Yes</button>
+    <button (click)="cancelPopup()">No</button>
+  </div>
+</div>

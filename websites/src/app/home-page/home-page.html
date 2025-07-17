@@ -1,13 +1,20 @@
-@if(isLoggedIn) {
-  <div class="welcome-message">
-    <h1>Welcome back!</h1>
-    <p>We're glad to see you again.</p>
-  </div>
-}@else {
-  <div class="welcome-message">
-    <h1>Welcome to SwiftChat!</h1>
-    <p>Please <a href="/auth">log in</a> or <a href="/auth">register</a> to continue.</p>
-  </div>
-}
-
-
+<div class="home-wrapper">
+  @if (isLoggedIn) {
+    <div class="home-card">
+      <h1>Welcome back!</h1>
+      <p>Let's get chatting:</p>
+      <div class="btn-group">
+        <button class="btn btn-primary" (click)="goToChat()">Go to Chat</button>
+      </div>
+    </div>
+  } @else {
+    <div class="home-card">
+      <h1>Welcome to SwiftChat!</h1>
+      <p>Please log in or register to continue:</p>
+      <div class="btn-group">
+        <button class="btn btn-primary" (click)="goToAuth()">Log In</button>
+        <button class="btn btn-secondary" (click)="goToAuth()">Register</button>
+      </div>
+    </div>
+  }
+</div>

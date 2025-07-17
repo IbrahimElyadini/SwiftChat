@@ -1,26 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-page',
-  imports: [],
+  standalone: true,
   templateUrl: './home-page.html',
-  styleUrl: './home-page.css'
+  styleUrls: ['./home-page.css']
 })
 export class HomePage implements OnInit {
-  isLoggedIn : boolean = false;
+  isLoggedIn = false;
+  private router = inject(Router);
 
   ngOnInit() {
     if (typeof window !== 'undefined' && window.sessionStorage) {
       this.isLoggedIn = sessionStorage.getItem('loggedIn') === 'true';
-    } else {
-      this.isLoggedIn = false;
     }
+  }
 
-    if (this.isLoggedIn) {
-      console.log('User is logged in');
-    } else {
-      console.log('User is not logged in');
-    }
-  }  
-
+  goToChat() {
+    this.router.navigate(['/chat']);
+  }
+  goToAuth() {
+    this.router.navigate(['/auth']);
+  }
 }

@@ -42,5 +42,13 @@ def create_profile_blueprint(db):
         db.update_user_password(user_id, hashed_pw)
         log_event("reset_password", user_id=user_id)
         return jsonify({"message": "Password updated"})
+    
+    @profile_bp.route('/profile', methods=['GET'])
+    def get_all_profiles():
+        users = db.get_all_users()
+        if not users:
+            return jsonify({"error": "No users found"}), 404
+        profiles = [{"id": user[0], "username": user[1], "avatar": user[3], "bio": user[4]} for user in users]
+        return jsonify(profiles)
 
     return profile_bp

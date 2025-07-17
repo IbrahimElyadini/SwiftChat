@@ -69,6 +69,13 @@ class DBManager:
         exists = cur.fetchone()
         cur.close()
         return exists is not None
+    
+    def get_all_users(self):
+        cur = self.mysql.connection.cursor()
+        cur.execute("SELECT id, username, email, avatar, bio FROM users")
+        users = cur.fetchall()
+        cur.close()
+        return users
 
     def get_user_by_username(self, username):
         cur = self.mysql.connection.cursor()
@@ -93,6 +100,20 @@ class DBManager:
         result = cur.fetchone()
         cur.close()
         return result is not None
+    
+    def get_conversations_for_user(self, user_id):
+        cur = self.mysql.connection.cursor()
+        cur.execute("""
+            SELECT c.id, c.name, c.created_at 
+            FROM conversations c
+            JOIN conversation_members cm ON c.id = cm.conversation_id
+            WHERE cm.user_id = %s
+            ORDER BY c.created_at DESC
+        """, (user_id,))
+        conversations = cur.fetchall()
+        cur.close()
+        return conversations
+
 
     def get_user_profile(self, user_id):
         cur = self.mysql.connection.cursor()
