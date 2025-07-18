@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
 import { Api } from '../api';
@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-chat',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './chat.html',
   styleUrls: ['./chat.css'],
 })
@@ -26,13 +26,11 @@ export class Chat implements OnInit {
 
   newMessageText: string = '';
 
-
   private platformId = inject(PLATFORM_ID);
 
-  constructor(private api: Api) {}
+  constructor(private api: Api, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
-    // only access sessionStorage in the browser
     if (isPlatformBrowser(this.platformId)) {
       const storedId = sessionStorage.getItem('userId');
       if (storedId) {
@@ -49,6 +47,7 @@ export class Chat implements OnInit {
   loadUsers() {
     this.api.getAllProfiles().subscribe((users: ProfileInterface[]) => {
       this.users = users.filter((u: ProfileInterface) => u.id !== this.currentUserId);
+      this.cdr.detectChanges();
     });
   }
 
@@ -58,6 +57,7 @@ export class Chat implements OnInit {
         conversation_id: c.conversation_id,
         title: c.title,
       }));
+      this.cdr.detectChanges();
     });
   }
 
@@ -65,28 +65,31 @@ export class Chat implements OnInit {
     this.selectedConversation = convo;
     this.api.getConversationMessages(convo.conversation_id).subscribe(messages => {
       this.selectedMessages = messages;
+      this.cdr.detectChanges();
     });
   }
 
   startConversation(user: ProfileInterface) {
     this.popupUser = user;
     this.showPopup = true;
+    this.cdr.detectChanges();
   }
 
   sendMessage() {
-  if (!this.selectedConversation || !this.newMessageText.trim()) return;
+    if (!this.selectedConversation || !this.newMessageText.trim()) return;
 
-  this.api
-    .sendMessage(this.selectedConversation.conversation_id, this.currentUserId, this.newMessageText)
-    .subscribe(response => {
-      this.selectedMessages.push({
-        sender_id: this.currentUserId,
-        message: this.newMessageText,
-        sent_at: new Date().toISOString(), 
+    this.api
+      .sendMessage(this.selectedConversation.conversation_id, this.currentUserId, this.newMessageText)
+      .subscribe(response => {
+        this.selectedMessages.push({
+          sender_id: this.currentUserId,
+          message: this.newMessageText,
+          sent_at: new Date().toISOString(),
+        });
+        this.newMessageText = '';
+        this.cdr.detectChanges();
       });
-      this.newMessageText = '';
-    });
-}
+  }
 
   confirmStart() {
     if (!this.popupUser) return;
@@ -100,11 +103,13 @@ export class Chat implements OnInit {
       this.selectConversation(newConvo);
       this.showPopup = false;
       this.popupUser = null;
+      this.cdr.detectChanges();
     });
   }
 
   cancelPopup() {
     this.popupUser = null;
     this.showPopup = false;
+    this.cdr.detectChanges();
   }
 }

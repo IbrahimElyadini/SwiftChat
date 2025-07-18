@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormsModule, NgForm  } from '@angular/forms';
 import { Api } from '../api';
 import { UserInfo } from '../user-info';
@@ -20,17 +20,23 @@ export class RegisterLogin {
   mode: 'register' | 'login' = 'register';
   timeout: number = 2200; // Timeout for form reset
 
-  constructor(private api: Api, private router: Router) {}
+  constructor(
+    private api: Api, 
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   toggleMode() {
     this.errorMessage = '';
     this.mode = this.mode === 'register' ? 'login' : 'register';
+    this.cdr.detectChanges();
   }
 
   onSubmit(form: NgForm) {
     if (form.invalid) {
       this.errorMessage = 'Please fill in all required fields correctly.';
       console.error('Form is invalid:', this.errorMessage);
+      this.cdr.detectChanges();
       return;
     }
 
@@ -41,13 +47,14 @@ export class RegisterLogin {
     } else {
       this.login();
     }
+
     setTimeout(() => {
       form.resetForm();
       this.username = '';
       this.password = '';
-      this.email = '';  
+      this.email = '';
+      this.cdr.detectChanges();
     }, this.timeout);
-
   }
 
   login() {
@@ -78,6 +85,7 @@ export class RegisterLogin {
         } else {
           this.errorMessage = 'Unexpected error occurred';
         }
+        this.cdr.detectChanges();
         console.error(this.errorMessage, error);
       }
     });
@@ -112,6 +120,7 @@ export class RegisterLogin {
         } else {
           this.errorMessage = 'Unexpected error occurred';
         }
+        this.cdr.detectChanges();
         console.log("setting error:", this.errorMessage);
       }
     });

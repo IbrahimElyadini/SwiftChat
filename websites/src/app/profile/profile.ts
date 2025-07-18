@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ProfileInterface } from '../profileInterface.js';
 import { Api } from '../api.js';
 import { CommonModule } from '@angular/common';
@@ -26,48 +26,41 @@ export class Profile implements OnInit {
   bioEditing = false;
   avatarPopupOpen = false;
 
-  // Liste d'avatars disponibles
   availableAvatars = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 , 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 ];
 
-  constructor(private api: Api, private router: Router) {}
+  constructor(
+    private api: Api,
+    private router: Router,
+    private cdr: ChangeDetectorRef // 🔄 Change Detection hook
+  ) {}
 
-ngOnInit() {
-  if (typeof window !== 'undefined' && window.sessionStorage) {
-    const userId = parseInt(sessionStorage.getItem('userId') || '0', 10);
-    if (userId) {
-      this.api.getProfile(userId).subscribe({
-        next: (response) => {
-          this.profile.avatar = response.avatar ?? 0;
-          this.profile.bio = response.bio ?? '';
-          this.profile.email = response.email ?? '';
-          this.profile.id = response.id ?? 0;
-          this.profile.username = response.username ?? '';
-          console.log('Profile loaded successfully:', this.profile);
+  ngOnInit() {
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+      const userId = parseInt(sessionStorage.getItem('userId') || '0', 10);
+      if (userId) {
+        this.api.getProfile(userId).subscribe({
+          next: (response) => {
+            this.profile.avatar = response.avatar ?? 0;
+            this.profile.bio = response.bio ?? '';
+            this.profile.email = response.email ?? '';
+            this.profile.id = response.id ?? 0;
+            this.profile.username = response.username ?? '';
+            console.log('Profile loaded successfully:', this.profile);
 
-          // Simulate mouse events to trigger any hover effects which help with UI updates
-          setTimeout(() => {
-            const bioElem = document.querySelector('.bio-group');
-            if (bioElem) {
-              bioElem.dispatchEvent(new Event('mouseenter'));
-              setTimeout(() => {
-                bioElem.dispatchEvent(new Event('mouseleave'));
-              }, 5);
+            while (this.cdr == undefined) { // Wait for ChangeDetectorRef to be defined
             }
-          }, 5);
-          
-        },
-        error: (error) => {
-          this.errorMessage = 'Failed to load profile. Please try again later.';
-          console.error('Error loading profile:', error);
-        }
-      });
+            this.updateView();
+          },
+          error: (error) => {
+            this.errorMessage = 'Failed to load profile. Please try again later.';
+            console.error('Error loading profile:', error);
+          }
+        });
+      }
+    } else {
+      this.errorMessage = 'Cannot access session storage (not running in browser)';
     }
-  } else {
-    // Cas SSR ou sessionStorage non dispo, agir en conséquence
-    this.errorMessage = 'Cannot access session storage (not running in browser)';
   }
-}
-
 
   updateProfile() {
     this.api.updateProfile(this.profile).subscribe({
@@ -80,6 +73,7 @@ ngOnInit() {
         console.error('Update error:', error);
       }
     });
+    this.updateView();
   }
 
   deleteProfile() {
@@ -120,4 +114,9 @@ ngOnInit() {
     this.closeAvatarPopup();
   }
 
+  updateView() {
+    console.log('is cdr defined:', this.cdr);
+    if(!this.cdr) return;
+    this.cdr.detectChanges();
+  }
 }
