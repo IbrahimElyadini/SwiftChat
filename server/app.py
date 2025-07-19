@@ -5,6 +5,7 @@ from db_manager import DBManager
 from auth import create_auth_blueprint
 from services import create_services_blueprint
 from user_profile import create_profile_blueprint
+from stats import create_stats_blueprint
 from dotenv import load_dotenv
 import os
 
@@ -26,6 +27,7 @@ db = DBManager(app)
 app.register_blueprint(create_auth_blueprint(db))
 app.register_blueprint(create_services_blueprint(db))
 app.register_blueprint(create_profile_blueprint(db))
+app.register_blueprint(create_stats_blueprint(), url_prefix='/stats')
 
 @app.route('/')
 def home():

@@ -1,6 +1,8 @@
-import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, inject, OnInit, PLATFORM_ID, OnDestroy } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth-service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -8,18 +10,23 @@ import { Router } from '@angular/router';
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
-export class Header implements OnInit {
+export class Header implements OnInit, OnDestroy {
 
   isLoggedIn = false;
   darkMode = false;
   private platformId = inject(PLATFORM_ID);
   private router = inject(Router);
+  private authService = inject(AuthService);
+  private loginSub?: Subscription;
+
 
   constructor() {
   }
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      this.isLoggedIn = sessionStorage.getItem('loggedIn') === 'true';
+      this.loginSub = this.authService.loggedIn$.subscribe(value => {
+        this.isLoggedIn = value;
+      });
       const storedMode = localStorage.getItem('darkMode');
       this.darkMode = (storedMode === 'true');
       document.body.classList.toggle('dark-mode', this.darkMode);
@@ -35,6 +42,10 @@ export class Header implements OnInit {
         }
       }, 100);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.loginSub?.unsubscribe();
   }
 
  toggleDarkMode() {

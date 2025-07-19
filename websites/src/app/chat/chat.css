@@ -178,3 +178,8 @@ body.dark-mode .message-input button:hover {
   width: 100%;
   margin-bottom: 10px;
 }
+
+.selected {
+  font-weight: bold;
+}
+

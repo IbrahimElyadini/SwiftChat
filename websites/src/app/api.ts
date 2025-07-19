@@ -32,6 +32,11 @@ export class Api {
       bio: profile.bio
     });
   }
+  resetPassword(userId: number, newPassword: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/profile/${userId}/reset_password`, {
+      new_password: newPassword
+    });
+  }
 
   deleteProfile(userId: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/profile/${userId}`);

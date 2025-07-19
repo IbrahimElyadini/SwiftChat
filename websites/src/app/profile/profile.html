@@ -74,6 +74,30 @@
         <button class="btn btn-secondary" type="button" (click)="deleteProfile()">
           Delete
         </button>
+        <button class="btn btn-outline" type="button" (click)="logout()">
+          Logout
+        </button>
+      </div>
+      <!-- Reset Password Section -->
+      <div class="form-group">
+        <button class="btn btn-outline" type="button" (click)="resetPasswordMode = !resetPasswordMode">
+          {{ resetPasswordMode ? 'Cancel Reset' : 'Reset Password' }}
+        </button>
+      </div>
+
+      <div *ngIf="resetPasswordMode" class="form-group">
+        <label for="newPassword">New Password</label>
+        <input
+          type="password"
+          id="newPassword"
+          name="newPassword"
+          [(ngModel)]="newPassword"
+          required
+          minlength="5"
+        />
+        <button class="btn btn-danger close-btn" type="button" (click)="resetPassword()">
+          Confirm Password Reset
+        </button>
       </div>
     </form>
 

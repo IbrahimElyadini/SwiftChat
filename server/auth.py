@@ -24,7 +24,7 @@ def create_auth_blueprint(db):
         user = db.get_user_by_username(username)
         if not user:
             return jsonify({"error": "User registration failed"}), 500
-
+        log_event("register", user_id=user[0])
         return jsonify({
             "message": "User registered successfully",
             "user_id": user[0],

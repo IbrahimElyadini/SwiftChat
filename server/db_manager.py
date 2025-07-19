@@ -82,7 +82,7 @@ class DBManager:
         cur.execute("SELECT id, username, email, password_hash FROM users WHERE username = %s", (username,))
         user = cur.fetchone()
         cur.close()
-        return user
+        return user    
 
     def conversation_id_exists(self, conversation_id):
         cur = self.mysql.connection.cursor()
@@ -118,6 +118,14 @@ class DBManager:
     def get_user_profile(self, user_id):
         cur = self.mysql.connection.cursor()
         cur.execute("SELECT id, username, email, avatar, bio FROM users WHERE id = %s", (user_id,))
+        user = cur.fetchone()
+        cur.close()
+        return user
+    
+    
+    def get_user_profile_by_username(self, username):
+        cur = self.mysql.connection.cursor()
+        cur.execute("SELECT id, username, email, avatar, bio FROM users WHERE username = %s", (username,))
         user = cur.fetchone()
         cur.close()
         return user

@@ -3,15 +3,15 @@
   <div class="chat-sidebar-left">
     <h3>Conversations</h3>
     <ul>
-      <li *ngFor="let convo of conversations" (click)="selectConversation(convo)">
+      <li *ngFor="let convo of conversations" (click)="selectConversation(convo)"   [class.selected]="selectedConversation?.conversation_id === convo.conversation_id">
         <img
           class="avatar-small"
-          [src]="'/avatar' + 0 + '.png'"
+          [src]="'/avatar' + (convo.other_user?.avatar || '0')  + '.png'"
           alt="Avatar"
           width="30"
           height="30"
         />
-        {{ convo.title }}
+        {{ convo.other_user?.name || convo.name }}
       </li>
     </ul>
   </div>
@@ -19,11 +19,11 @@
   <!-- Current conversation or empty message -->
  <div class="chat-main">
   <ng-container *ngIf="selectedConversation; else emptyState">
-    <h3>{{ selectedConversation.title }}</h3>
+    <h3>{{ selectedConversation.name }}</h3>
 
     <div class="messages">
       <div *ngFor="let message of selectedMessages">
-        <strong>{{ message.sender_id === currentUserId ? 'You' : 'User ' + message.sender_id }}:</strong>
+        <strong>{{ getUserName(message.sender_id) }}:</strong>
         {{ message.message }}
       </div>
     </div>

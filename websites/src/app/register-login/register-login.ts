@@ -5,6 +5,8 @@ import { UserInfo } from '../user-info';
 import { CommonModule } from '@angular/common';
 import { UserCredential } from '../user-credential';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth-service';
+
 
 @Component({
   selector: 'app-register-login',
@@ -23,7 +25,8 @@ export class RegisterLogin {
   constructor(
     private api: Api, 
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService
   ) {}
 
   toggleMode() {
@@ -67,7 +70,7 @@ export class RegisterLogin {
       next: (response) => {
         sessionStorage.setItem('username', credentials.username);
         sessionStorage.setItem('password', credentials.password);
-        sessionStorage.setItem('loggedIn', 'true');
+        this.authService.setLoggedIn(true);
         sessionStorage.setItem('userId', response.user_id.toString());
         console.log('User logged in successfully:', response);
 
@@ -102,7 +105,7 @@ export class RegisterLogin {
       next: (response) => {
         sessionStorage.setItem('username', user.username);
         sessionStorage.setItem('password', user.password);
-        sessionStorage.setItem('loggedIn', 'true');
+        this.authService.setLoggedIn(true);
         sessionStorage.setItem('userId', response.user_id.toString());
         console.log("User registered successfully: ", response);
 
