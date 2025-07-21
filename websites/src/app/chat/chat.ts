@@ -6,6 +6,7 @@ import { Api } from '../api';
 import { ProfileInterface } from '../profileInterface';
 import { Conversation } from '../conversation';
 import { FormsModule } from '@angular/forms';
+import { Websocket } from '../websocket';
 
 @Component({
   selector: 'app-chat',
@@ -27,25 +28,41 @@ export class Chat implements OnInit, OnDestroy {
   newMessageText: string = '';
 
   private platformId = inject(PLATFORM_ID);
-  private pollingIntervalId: any = null;
 
-  constructor(private api: Api, private cdr: ChangeDetectorRef) {}
+  constructor(private api: Api, private cdr: ChangeDetectorRef, private ws: Websocket) {}
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
       const storedId = sessionStorage.getItem('userId');
       if (storedId) {
         this.currentUserId = Number(storedId);
+
+        //websocket setup
+        this.ws.identify(this.currentUserId.toString());
+        this.ws.onIdentifyResponse().subscribe(res => {
+          if (res.status !== 'ok') {
+            console.error('WebSocket identify failed:', res.reason);
+          }
+        });
+
+        this.ws.onReceiveMessage().subscribe(data => {
+          if (this.selectedConversation && data.sender_id.toString() === this.selectedConversation.other_user?.user_id.toString()) {
+            this.selectedMessages.push({
+              sender_id: Number(data.sender_id),
+              message: data.content,
+              sent_at: new Date().toISOString()
+            });
+            this.cdr.detectChanges();
+          }
+        });
+
+        this.ws.onNewConversation().subscribe(data => {
+          this.loadConversations(); // refresh the conversation list
+        });
+
         this.loadUsers();
         this.loadConversations();
 
-        // Poll every 5 seconds
-        this.pollingIntervalId = setInterval(() => {
-          this.loadConversations();
-          if (this.selectedConversation) {
-            this.loadMessages(this.selectedConversation.conversation_id);
-          }
-        }, 5000);
       } else {
         console.error('No userId in sessionStorage.');
         window.location.href = '/auth';
@@ -54,9 +71,6 @@ export class Chat implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.pollingIntervalId) {
-      clearInterval(this.pollingIntervalId);
-    }
   }
 
   loadUsers() {
@@ -117,6 +131,11 @@ export class Chat implements OnInit, OnDestroy {
     this.api
       .sendMessage(this.selectedConversation.conversation_id, this.currentUserId, this.newMessageText)
       .subscribe(() => {
+          this.ws.sendMessage(
+            this.currentUserId.toString(),
+            String(this.selectedConversation!.other_user?.user_id),
+            this.newMessageText
+        );
         this.selectedMessages.push({
           sender_id: this.currentUserId,
           message: this.newMessageText,
@@ -141,6 +160,9 @@ export class Chat implements OnInit, OnDestroy {
           avatar: String(this.popupUser!.avatar) || '0',
         }
       };
+
+      this.ws.notifyNewConversation(this.popupUser!.id.toString(), response.conversation_id.toString());
+
       this.conversations.push(newConvo);
       this.selectConversation(newConvo);
       this.showPopup = false;
