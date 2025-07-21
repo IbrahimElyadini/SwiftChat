@@ -1,1 +1,22 @@
-<p>dashboard works!</p>
+<h2 class="dashboard-title">Admin Dashboard</h2>
+
+<div class="dashboard-layout">
+  <nav class="sidebar">
+    <button
+      *ngFor="let chart of chartOptions"
+      (click)="selectedChart = chart.id"
+      [class.active]="selectedChart === chart.id"
+    >
+      {{ chart.label }}
+    </button>
+  </nav>
+
+  <main class="chart-container">
+    <div *ngFor="let chart of chartOptions">
+      <div *ngIf="selectedChart === chart.id" class="chart-wrapper">
+        <h3>{{ chart.label }}</h3>
+        <canvas baseChart [data]="chartDataMap[chart.id]" [type]="chart.type"></canvas>
+      </div>
+    </div>
+  </main>
+</div>

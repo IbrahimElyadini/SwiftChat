@@ -9,6 +9,12 @@
     <button class="auth-button" (click)="redirect()">
       {{ isLoggedIn ? 'Profile' : 'Login/Register' }}
     </button>
+
+    @if(isAdmin()) {
+      <button class="auth-button" (click)="gotoAdminDashboard()">
+        Dashboard
+      </button>
+    }
   </div>
 </header>
 

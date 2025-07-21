@@ -31,7 +31,6 @@ export class Header implements OnInit, OnDestroy {
       this.darkMode = (storedMode === 'true');
       document.body.classList.toggle('dark-mode', this.darkMode);
 
-      // Simulate mouse events to trigger any hover effects which help with UI updates
       setTimeout(() => {
         const bioElem = document.querySelector('.lightning-icon');
         if( bioElem) {
@@ -62,6 +61,18 @@ export class Header implements OnInit, OnDestroy {
 
   gotoHome() {
     this.router.navigate(['/']);
+  }
+
+  isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
+
+  gotoAdminDashboard() {
+    if (this.isAdmin()) {
+      this.router.navigate(['/dashboard']);
+    } else {
+      console.error('User is not an admin.');
+    }
   }
 
 }

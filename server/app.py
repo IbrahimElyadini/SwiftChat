@@ -6,12 +6,15 @@ from auth import create_auth_blueprint
 from services import create_services_blueprint
 from user_profile import create_profile_blueprint
 from stats import create_stats_blueprint
+from sockets import socketio, init_socketio
+
 from dotenv import load_dotenv
 import os
 
 load_dotenv()  # Load variables from .env
 
 app = Flask(__name__)
+init_socketio(app)
 
 # Autoriser CORS sur toute l'application
 CORS(app, origins="*")  # remplacer * par l'addresse du site web quand en production
@@ -34,4 +37,4 @@ def home():
     return "Hello, Flask!"
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    socketio.run(app, debug=True)

@@ -23,4 +23,12 @@ export class AuthService {
   get isLoggedIn(): boolean {
     return this.loggedInSubject.value;
   }
+  
+  isAdmin(): boolean {
+    if (isPlatformBrowser(this.platformId)) {
+      const username = sessionStorage.getItem('username');
+      return username === 'admin';
+    }
+    return false;
+  }
 }
