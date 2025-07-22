@@ -17,6 +17,7 @@ Having grown up using platforms like Skype, Teamspeak, Microsoft Teams, and Disc
 For fun, I even added some League of Legends-themed icons, since I frequently use chat apps while gaming. In the future, I’d love to integrate voice chat functionality, so I can play and communicate with friends directly in SwiftChat. That would be awesome.
 
 website adress: https://swiftchatfrontend.onrender.com/
+
 ---
 
 ## 🚀 Features
